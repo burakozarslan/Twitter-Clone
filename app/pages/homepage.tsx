@@ -6,6 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 // Components
 import NavMenu from "app/core/components/NavMenu"
 import Sidebar from "app/core/components/Sidebar"
+import HomeFeed from "app/core/components/HomeFeed"
 
 const HomePage: BlitzPage = () => {
   const max500 = useMediaQuery("(max-width:500px)")
@@ -42,19 +43,10 @@ const HomePage: BlitzPage = () => {
             alignItems: "stretch",
             justifyContent: "space-between",
             width: 990,
-            backgroundColor: "chocolate",
           }}
         >
           {/* Content Container */}
-          <Box
-            sx={{
-              width: "100%",
-              maxWidth: 600,
-              backgroundColor: "teal",
-            }}
-          >
-            content
-          </Box>
+          <HomeFeed />
           {/* Sidebar */}
           <Sidebar />
         </Box>

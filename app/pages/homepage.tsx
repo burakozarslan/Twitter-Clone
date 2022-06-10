@@ -5,11 +5,10 @@ import { Box } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 // Components
 import NavMenu from "app/core/components/NavMenu"
+import Sidebar from "app/core/components/Sidebar"
 
 const HomePage: BlitzPage = () => {
   const max500 = useMediaQuery("(max-width:500px)")
-  const max1000 = useMediaQuery("(max-width:1000px)")
-  const max1095 = useMediaQuery("(max-width:1095px)")
 
   return (
     <Box
@@ -56,16 +55,8 @@ const HomePage: BlitzPage = () => {
           >
             content
           </Box>
-          {/* Sidebar Container */}
-          <Box
-            sx={{
-              width: max1095 ? 290 : 350,
-              display: max1000 ? "none" : "block",
-              backgroundColor: "palegreen",
-            }}
-          >
-            sidebar
-          </Box>
+          {/* Sidebar */}
+          <Sidebar />
         </Box>
       </Box>
     </Box>

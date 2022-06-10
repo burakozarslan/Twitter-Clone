@@ -90,6 +90,7 @@ const NavListItem = ({ isActive, icon, iconActive, text, clickHandler }: NavList
 
 const NavMenu = () => {
   const max1294 = useMediaQuery("(max-width:1294px)")
+  // TODO: Add router types
   const [activeNavItem, setActiveNavItem] = React.useState<string>("Home")
 
   const clickHandler = (text: string) => {

@@ -6,6 +6,7 @@ import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
+import InputBase from "@mui/material/InputBase"
 
 const PersonToFollow = () => {
   return (
@@ -61,28 +62,45 @@ const WhoToFollowSection = () => {
   return (
     <Box
       sx={{
-        maxWidth: "100%",
-        backgroundColor: "#f7f9f9",
-        mt: 2,
-        borderRadius: 5,
-        p: 2,
+        py: 2,
       }}
     >
-      <Typography
-        component="span"
+      <InputBase
+        placeholder="Search Twitter"
         sx={{
-          fontWeight: "bold",
-          fontSize: 20,
-          letterSpacing: 0.7,
+          width: "100%",
+          backgroundColor: "#eff3f4",
+          px: 2,
+          py: 0.5,
+          borderRadius: 30,
+        }}
+      />
+      <Box
+        sx={{
+          maxWidth: "100%",
+          backgroundColor: "#f7f9f9",
+          mt: 2,
+          borderRadius: 5,
+          p: 2,
         }}
       >
-        Who to follow
-      </Typography>
-      <List>
-        <PersonToFollow />
-        <PersonToFollow />
-        <PersonToFollow />
-      </List>
+        <Typography
+          component="span"
+          sx={{
+            fontWeight: "bold",
+            fontSize: 20,
+            letterSpacing: 0.7,
+            display: "inline-block",
+          }}
+        >
+          Who to follow
+        </Typography>
+        <List>
+          <PersonToFollow />
+          <PersonToFollow />
+          <PersonToFollow />
+        </List>
+      </Box>
     </Box>
   )
 }
@@ -96,6 +114,7 @@ const Sidebar = () => {
       sx={{
         width: max1095 ? 290 : 350,
         display: max1000 ? "none" : "block",
+        margin: "0 auto",
       }}
     >
       <WhoToFollowSection />

@@ -7,6 +7,10 @@ import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import Button from "@mui/material/Button"
+import Avatar from "@mui/material/Avatar"
+import Typography from "@mui/material/Typography"
+
 // Icons
 import { BsTwitter } from "react-icons/bs"
 import { AiOutlineHome, AiFillHome } from "react-icons/ai"
@@ -20,8 +24,8 @@ import {
   BsFillBookmarkFill,
   BsPerson,
   BsPersonFill,
+  BsThreeDots,
 } from "react-icons/bs"
-import Button from "@mui/material/Button"
 
 interface ListItemButtonWrapperProps {
   text: string
@@ -98,6 +102,8 @@ const NavMenu = () => {
         display: "flex",
         flexDirection: "column",
         width: max1294 ? 88 : 275,
+        height: "100vh",
+        pb: 2,
       }}
     >
       <IconButton
@@ -109,63 +115,120 @@ const NavMenu = () => {
       >
         <BsTwitter size={40} />
       </IconButton>
-      <List component="nav">
-        <NavListItem
-          icon={<AiOutlineHome />}
-          iconActive={<AiFillHome />}
-          text="Home"
-          isActive={activeNavItem === "Home"}
-          clickHandler={clickHandler}
-        />
-        <NavListItem
-          icon={<RiSearchLine />}
-          iconActive={<RiSearchFill />}
-          text="Search"
-          isActive={activeNavItem === "Search"}
-          clickHandler={clickHandler}
-        />
-        <NavListItem
-          icon={<BsBell />}
-          iconActive={<BsFillBellFill />}
-          text="Notifications"
-          isActive={activeNavItem === "Notifications"}
-          clickHandler={clickHandler}
-        />
-        <NavListItem
-          icon={<BsEnvelope />}
-          iconActive={<BsFillEnvelopeFill />}
-          text="Messages"
-          isActive={activeNavItem === "Messages"}
-          clickHandler={clickHandler}
-        />
-        <NavListItem
-          icon={<BsBookmark />}
-          iconActive={<BsFillBookmarkFill />}
-          text="Bookmarks"
-          isActive={activeNavItem === "Bookmarks"}
-          clickHandler={clickHandler}
-        />
-        <NavListItem
-          icon={<BsPerson />}
-          iconActive={<BsPersonFill />}
-          text="Profile"
-          isActive={activeNavItem === "Profile"}
-          clickHandler={clickHandler}
-        />
-      </List>
-      <Button
-        variant="contained"
+
+      <Box
         sx={{
-          backgroundColor: "rgb(29, 155, 240)",
-          borderRadius: 30,
-          width: "80%",
-          py: 1.4,
-          textTransform: "none",
-          fontSize: 18,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100%",
         }}
       >
-        Tweet
-      </Button>
+        <Box>
+          <List component="nav">
+            <NavListItem
+              icon={<AiOutlineHome />}
+              iconActive={<AiFillHome />}
+              text="Home"
+              isActive={activeNavItem === "Home"}
+              clickHandler={clickHandler}
+            />
+            <NavListItem
+              icon={<RiSearchLine />}
+              iconActive={<RiSearchFill />}
+              text="Search"
+              isActive={activeNavItem === "Search"}
+              clickHandler={clickHandler}
+            />
+            <NavListItem
+              icon={<BsBell />}
+              iconActive={<BsFillBellFill />}
+              text="Notifications"
+              isActive={activeNavItem === "Notifications"}
+              clickHandler={clickHandler}
+            />
+            <NavListItem
+              icon={<BsEnvelope />}
+              iconActive={<BsFillEnvelopeFill />}
+              text="Messages"
+              isActive={activeNavItem === "Messages"}
+              clickHandler={clickHandler}
+            />
+            <NavListItem
+              icon={<BsBookmark />}
+              iconActive={<BsFillBookmarkFill />}
+              text="Bookmarks"
+              isActive={activeNavItem === "Bookmarks"}
+              clickHandler={clickHandler}
+            />
+            <NavListItem
+              icon={<BsPerson />}
+              iconActive={<BsPersonFill />}
+              text="Profile"
+              isActive={activeNavItem === "Profile"}
+              clickHandler={clickHandler}
+            />
+          </List>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "rgb(29, 155, 240)",
+              borderRadius: 30,
+              width: "80%",
+              py: 1.4,
+              textTransform: "none",
+              fontSize: 18,
+            }}
+          >
+            Tweet
+          </Button>
+        </Box>
+      </Box>
+
+      <ListItemButton
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "90%",
+          p: 1,
+          borderRadius: 30,
+        }}
+      >
+        <Avatar src="https://randomuser.me/api/portraits/men/85.jpg" />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            mr: 4,
+          }}
+        >
+          <Typography
+            component="span"
+            sx={{
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            Name Surname
+          </Typography>
+          <Typography
+            component="span"
+            sx={{
+              fontSize: 14,
+            }}
+          >
+            @username
+          </Typography>
+        </Box>
+        <ListItemIcon
+          sx={{
+            fontSize: 20,
+            minWidth: 10,
+          }}
+        >
+          <BsThreeDots />
+        </ListItemIcon>
+      </ListItemButton>
     </Box>
   )
 }

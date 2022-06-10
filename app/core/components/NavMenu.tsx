@@ -21,6 +21,7 @@ import {
   BsPerson,
   BsPersonFill,
 } from "react-icons/bs"
+import Button from "@mui/material/Button"
 
 interface ListItemButtonWrapperProps {
   text: string
@@ -37,7 +38,10 @@ const ListItemButtonWrapper = ({
   return (
     <ListItemButton
       sx={{
-        pl: 1,
+        px: 2,
+        py: 1.5,
+        borderRadius: 30,
+        width: "fit-content",
       }}
       onClick={() => clickHandler(text)}
     >
@@ -99,6 +103,7 @@ const NavMenu = () => {
       <IconButton
         sx={{
           width: 45,
+          ml: 1,
           color: "rgb(29, 155, 240)",
         }}
       >
@@ -148,6 +153,19 @@ const NavMenu = () => {
           clickHandler={clickHandler}
         />
       </List>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: "rgb(29, 155, 240)",
+          borderRadius: 30,
+          width: "80%",
+          py: 1.4,
+          textTransform: "none",
+          fontSize: 18,
+        }}
+      >
+        Tweet
+      </Button>
     </Box>
   )
 }

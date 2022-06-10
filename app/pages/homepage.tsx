@@ -1,14 +1,15 @@
 import { BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 // Material UI
-import { Box, Container } from "@mui/system"
+import { Box } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
+// Components
+import NavMenu from "app/core/components/NavMenu"
 
 const HomePage: BlitzPage = () => {
   const max500 = useMediaQuery("(max-width:500px)")
   const max1000 = useMediaQuery("(max-width:1000px)")
   const max1095 = useMediaQuery("(max-width:1095px)")
-  const max1294 = useMediaQuery("(max-width:1294px)")
 
   return (
     <Box
@@ -25,16 +26,7 @@ const HomePage: BlitzPage = () => {
           display: max500 ? "none" : "flex",
         }}
       >
-        {/* Header */}
-        <Box
-          sx={{
-            width: max1294 ? 88 : 275,
-            backgroundColor: "orange",
-          }}
-          component="header"
-        >
-          Header
-        </Box>
+        <NavMenu />
       </Box>
       {/* Main Container */}
       <Box

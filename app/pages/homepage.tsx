@@ -4,7 +4,7 @@ import Layout from "app/core/layouts/Layout"
 import { Box, Container } from "@mui/system"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const Home: BlitzPage = () => {
+const HomePage: BlitzPage = () => {
   const max500 = useMediaQuery("(max-width:500px)")
   const max1000 = useMediaQuery("(max-width:1000px)")
   const max1095 = useMediaQuery("(max-width:1095px)")
@@ -80,7 +80,7 @@ const Home: BlitzPage = () => {
   )
 }
 
-Home.authenticate = true
-Home.getLayout = (page) => <Layout title="Home / Twitter">{page}</Layout>
+HomePage.authenticate = true
+HomePage.getLayout = (page) => <Layout title="Home / Twitter">{page}</Layout>
 
-export default Home
+export default HomePage

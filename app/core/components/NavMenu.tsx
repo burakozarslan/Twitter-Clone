@@ -169,6 +169,7 @@ const NavMenu = () => {
               clickHandler={clickHandler}
             />
           </List>
+          {/* Tweet Button */}
           <Button
             variant="contained"
             sx={{
@@ -184,7 +185,7 @@ const NavMenu = () => {
           </Button>
         </Box>
       </Box>
-
+      {/* User Profile */}
       <ListItemButton
         sx={{
           display: "flex",

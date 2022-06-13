@@ -18,8 +18,9 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 // Blitz
-import { useQuery } from "blitz"
+import { useMutation, useQuery } from "blitz"
 import getHomeFeedTweets from "app/tweets/queries/getHomeFeedTweets"
+import unfollowUser from "app/users/mutations/unfollowUser"
 
 const SendTweetSchema = z.object({
   body: z.string().max(280),
@@ -50,8 +51,20 @@ interface TweetProps {
   authorUsername: string
   body: string
   authorAvatar: string | null
+  refetch: () => void
 }
-const Tweet = ({ authorId, authorName, authorUsername, body, authorAvatar }: TweetProps) => {
+const Tweet = ({
+  authorId,
+  authorName,
+  authorUsername,
+  body,
+  authorAvatar,
+  refetch,
+}: TweetProps) => {
+  const [unfollowMutation] = useMutation(unfollowUser, {
+    onSuccess: () => refetch(),
+  })
+
   const [open, setOpen] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -111,7 +124,16 @@ const Tweet = ({ authorId, authorName, authorUsername, body, authorAvatar }: Twe
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps} timeout={350}>
                   <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-                    The content of the Popper.
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        unfollowMutation({
+                          id: authorId,
+                        })
+                      }
+                    >
+                      Unfollow
+                    </Button>
                   </Box>
                 </Fade>
               )}
@@ -184,7 +206,7 @@ const Tweet = ({ authorId, authorName, authorUsername, body, authorAvatar }: Twe
 }
 
 const HomeFeed = () => {
-  const [homeFeedTweets] = useQuery(getHomeFeedTweets, undefined, {
+  const [homeFeedTweets, { refetch }] = useQuery(getHomeFeedTweets, undefined, {
     suspense: false,
   })
 
@@ -199,6 +221,7 @@ const HomeFeed = () => {
           authorUsername={tweet.author.username}
           authorAvatar={tweet.author.avatar}
           body={tweet.body}
+          refetch={refetch}
         />
       ))}
     </ContentWrapper>

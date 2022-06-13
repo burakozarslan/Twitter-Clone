@@ -1,3 +1,4 @@
+import * as React from "react"
 // Components
 import ContentWrapper from "./wrappers/ContentWrapper"
 // Material UI
@@ -8,6 +9,8 @@ import IconButton from "@mui/material/IconButton"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import InputBase from "@mui/material/InputBase"
+import Popper from "@mui/material/Popper"
+import Fade from "@mui/material/Fade"
 // Icons
 import { BsChat, BsHeart } from "react-icons/bs"
 // React Hook Form
@@ -39,6 +42,22 @@ const SendTweetForm = () => {
 }
 
 const Tweet = () => {
+  const [open, setOpen] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const handleOpenPopper = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(true)
+  }
+
+  const handleClosePopper = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(false)
+  }
+
+  const canBeOpen = open && Boolean(anchorEl)
+  const id = canBeOpen ? "transition-popper" : undefined
+
   return (
     <Box
       sx={{
@@ -74,9 +93,20 @@ const Tweet = () => {
             },
           }}
         >
-          <Typography sx={{ fontWeight: "bold" }} component="span">
-            Jane Doe
-          </Typography>
+          <Box onMouseEnter={handleOpenPopper} onMouseLeave={handleClosePopper}>
+            <Typography aria-describedby={id} sx={{ fontWeight: "bold" }} component="span">
+              Jane Doe
+            </Typography>
+            <Popper id={id} open={open} anchorEl={anchorEl} transition>
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={350}>
+                  <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+                    The content of the Popper.
+                  </Box>
+                </Fade>
+              )}
+            </Popper>
+          </Box>
           <Typography component="span">@janedoe</Typography>
           <Typography component="span">4h</Typography>
         </Box>

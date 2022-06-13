@@ -19,6 +19,8 @@ model User {
   name           String?
   email          String   @unique
   hashedPassword String?
+  avatar         String?
+  bannerImage    String?
   role           String   @default("USER")
 
   tokens   Token[]

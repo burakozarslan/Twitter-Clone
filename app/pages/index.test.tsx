@@ -15,8 +15,12 @@ test.skip("renders blitz documentation link", () => {
   mockUseCurrentUser.mockReturnValue({
     id: 1,
     name: "User",
+    username: "username",
     email: "user@email.com",
     role: "user",
+    avatar: "https://avatar.com",
+    bannerImage: "https://banner.com",
+    createdAt: new Date(),
   })
 
   const { getByText } = render(<Home />)

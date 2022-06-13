@@ -23,6 +23,8 @@ model User {
 
   tokens   Token[]
   sessions Session[]
+
+  tweets Tweet[]
 }
 
 model Session {
@@ -55,6 +57,17 @@ model Token {
   userId Int
 
   @@unique([hashedToken, type])
+}
+
+model Tweet {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  body      String
+  image     String?
+
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
 }
 
 // NOTE: It's highly recommended to use an enum for the token type

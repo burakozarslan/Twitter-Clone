@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "Tweet" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "body" TEXT NOT NULL,
+    "image" TEXT,
+    "authorId" INTEGER NOT NULL,
+    CONSTRAINT "Tweet_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

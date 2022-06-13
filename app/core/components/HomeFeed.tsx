@@ -17,6 +17,9 @@ import { BsChat, BsHeart } from "react-icons/bs"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+// Blitz
+import { useQuery } from "blitz"
+import getHomeFeedTweets from "app/tweets/queries/getHomeFeedTweets"
 
 const SendTweetSchema = z.object({
   body: z.string().max(280),
@@ -41,7 +44,14 @@ const SendTweetForm = () => {
   )
 }
 
-const Tweet = () => {
+interface TweetProps {
+  authorId: number
+  authorName: string
+  authorUsername: string
+  body: string
+  authorAvatar: string | null
+}
+const Tweet = ({ authorId, authorName, authorUsername, body, authorAvatar }: TweetProps) => {
   const [open, setOpen] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -69,7 +79,7 @@ const Tweet = () => {
       }}
     >
       <Avatar
-        src="https://randomuser.me/api/portraits/women/3.jpg"
+        src={authorAvatar || "https://via.placeholder.com/150"}
         sx={{
           width: 50,
           height: 50,
@@ -95,7 +105,7 @@ const Tweet = () => {
         >
           <Box onMouseEnter={handleOpenPopper} onMouseLeave={handleClosePopper}>
             <Typography aria-describedby={id} sx={{ fontWeight: "bold" }} component="span">
-              Jane Doe
+              {authorName}
             </Typography>
             <Popper id={id} open={open} anchorEl={anchorEl} transition>
               {({ TransitionProps }) => (
@@ -107,15 +117,12 @@ const Tweet = () => {
               )}
             </Popper>
           </Box>
-          <Typography component="span">@janedoe</Typography>
+          <Typography component="span">@{authorUsername}</Typography>
           <Typography component="span">4h</Typography>
         </Box>
         {/* Tweet Body */}
         <Typography component="p" fontSize={15} paddingLeft={1} lineHeight={1.2}>
-          Imagine falling in love with someone and then finding out they make tea this colour.
-          Imagine falling in love with someone and then finding out they make tea this colour.
-          Imagine falling in love with someone and then finding out they make tea this colour.
-          Imagine falling in love with someone and then finding out they make tea this colour.
+          {body}
         </Typography>
         {/* Tweet Actions */}
         <Box
@@ -177,12 +184,23 @@ const Tweet = () => {
 }
 
 const HomeFeed = () => {
+  const [homeFeedTweets] = useQuery(getHomeFeedTweets, undefined, {
+    suspense: false,
+  })
+
   return (
     <ContentWrapper>
       <SendTweetForm />
-      <Tweet />
-      <Tweet />
-      <Tweet />
+      {homeFeedTweets?.map((tweet) => (
+        <Tweet
+          key={tweet.id}
+          authorId={tweet.authorId}
+          authorName={tweet.author.name}
+          authorUsername={tweet.author.username}
+          authorAvatar={tweet.author.avatar}
+          body={tweet.body}
+        />
+      ))}
     </ContentWrapper>
   )
 }

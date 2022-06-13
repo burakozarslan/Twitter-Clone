@@ -10,7 +10,9 @@ import ListItemText from "@mui/material/ListItemText"
 import Button from "@mui/material/Button"
 import Avatar from "@mui/material/Avatar"
 import Typography from "@mui/material/Typography"
-
+import Popper from "@mui/material/Popper"
+import Fade from "@mui/material/Fade"
+import Paper from "@mui/material/Paper"
 // Icons
 import { BsTwitter } from "react-icons/bs"
 import { AiOutlineHome, AiFillHome } from "react-icons/ai"
@@ -26,6 +28,11 @@ import {
   BsPersonFill,
   BsThreeDots,
 } from "react-icons/bs"
+// Hooks
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+// Mutations
+import logout from "app/auth/mutations/logout"
+import { useMutation } from "blitz"
 
 interface ListItemButtonWrapperProps {
   text: string
@@ -89,12 +96,22 @@ const NavListItem = ({ isActive, icon, iconActive, text, clickHandler }: NavList
 }
 
 const NavMenu = () => {
+  const currentUser = useCurrentUser()
+  const [logoutMutation] = useMutation(logout)
   const max1294 = useMediaQuery("(max-width:1294px)")
   // TODO: Add router types
   const [activeNavItem, setActiveNavItem] = React.useState<string>("Home")
+  // Popper states
+  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null)
+  const [open, setOpen] = React.useState(false)
 
-  const clickHandler = (text: string) => {
+  const navClickHandler = (text: string) => {
     setActiveNavItem(text)
+  }
+
+  const profileClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(!open)
   }
 
   return (
@@ -132,42 +149,42 @@ const NavMenu = () => {
               iconActive={<AiFillHome />}
               text="Home"
               isActive={activeNavItem === "Home"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
             <NavListItem
               icon={<RiSearchLine />}
               iconActive={<RiSearchFill />}
               text="Search"
               isActive={activeNavItem === "Search"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
             <NavListItem
               icon={<BsBell />}
               iconActive={<BsFillBellFill />}
               text="Notifications"
               isActive={activeNavItem === "Notifications"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
             <NavListItem
               icon={<BsEnvelope />}
               iconActive={<BsFillEnvelopeFill />}
               text="Messages"
               isActive={activeNavItem === "Messages"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
             <NavListItem
               icon={<BsBookmark />}
               iconActive={<BsFillBookmarkFill />}
               text="Bookmarks"
               isActive={activeNavItem === "Bookmarks"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
             <NavListItem
               icon={<BsPerson />}
               iconActive={<BsPersonFill />}
               text="Profile"
               isActive={activeNavItem === "Profile"}
-              clickHandler={clickHandler}
+              clickHandler={navClickHandler}
             />
           </List>
           {/* Tweet Button */}
@@ -187,50 +204,63 @@ const NavMenu = () => {
         </Box>
       </Box>
       {/* User Profile */}
-      <ListItemButton
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "90%",
-          p: 1,
-          borderRadius: 30,
-        }}
-      >
-        <Avatar src="https://randomuser.me/api/portraits/men/85.jpg" />
-        <Box
+      {currentUser && (
+        <ListItemButton
+          onClick={(event) => profileClickHandler(event)}
           sx={{
             display: "flex",
-            flexDirection: "column",
-            mr: 4,
+            justifyContent: "space-between",
+            width: "90%",
+            p: 1,
+            borderRadius: 30,
           }}
         >
-          <Typography
-            component="span"
+          <Popper open={open} anchorEl={anchorEl} placement="top" transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
+                  <Button onClick={async () => await logoutMutation()}>Logout</Button>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+          <Avatar src={currentUser.avatar || ""} />
+          <Box
             sx={{
-              fontSize: 15,
-              fontWeight: "bold",
+              display: "flex",
+              flexDirection: "column",
+              mr: 4,
             }}
           >
-            Name Surname
-          </Typography>
-          <Typography
-            component="span"
+            <Typography
+              component="span"
+              sx={{
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              {currentUser.name}
+            </Typography>
+            <Typography
+              component="span"
+              sx={{
+                fontSize: 14,
+              }}
+            >
+              @{currentUser.username}
+            </Typography>
+          </Box>
+          <ListItemIcon
             sx={{
-              fontSize: 14,
+              fontSize: 20,
+              minWidth: 10,
             }}
           >
-            @username
-          </Typography>
-        </Box>
-        <ListItemIcon
-          sx={{
-            fontSize: 20,
-            minWidth: 10,
-          }}
-        >
-          <BsThreeDots />
-        </ListItemIcon>
-      </ListItemButton>
+            <BsThreeDots />
+          </ListItemIcon>
+        </ListItemButton>
+      )}
     </Box>
   )
 }

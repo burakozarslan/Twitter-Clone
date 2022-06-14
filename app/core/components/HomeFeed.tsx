@@ -11,6 +11,7 @@ import Button from "@mui/material/Button"
 import InputBase from "@mui/material/InputBase"
 import Popper from "@mui/material/Popper"
 import Fade from "@mui/material/Fade"
+import CircularProgress from "@mui/material/CircularProgress"
 // Icons
 import { BsChat, BsHeart } from "react-icons/bs"
 // React Hook Form
@@ -206,13 +207,24 @@ const Tweet = ({
 }
 
 const HomeFeed = () => {
-  const [homeFeedTweets, { refetch }] = useQuery(getHomeFeedTweets, undefined, {
+  const [homeFeedTweets, { refetch, isLoading }] = useQuery(getHomeFeedTweets, undefined, {
     suspense: false,
   })
 
   return (
     <ContentWrapper>
       <SendTweetForm />
+      {isLoading && (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress color="primary" size={25} />
+        </Box>
+      )}
       {homeFeedTweets?.map((tweet) => (
         <Tweet
           key={tweet.id}

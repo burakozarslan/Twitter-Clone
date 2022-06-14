@@ -1,3 +1,4 @@
+import * as React from "react"
 // Material UI
 import useMediaQuery from "@mui/material/useMediaQuery"
 import Box from "@mui/material/Box"
@@ -7,6 +8,10 @@ import ListItem from "@mui/material/ListItem"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import InputBase from "@mui/material/InputBase"
+import Popper from "@mui/material/Popper"
+import Fade from "@mui/material/Fade"
+import Paper from "@mui/material/Paper"
+import ClickAwayListener from "@mui/material/ClickAwayListener"
 
 const PersonToFollow = () => {
   return (
@@ -59,22 +64,59 @@ const PersonToFollow = () => {
 }
 
 const WhoToFollowSection = () => {
+  // TODO: Fix typings
+  const [anchorEl, setAnchorEl] = React.useState<any | null>(null)
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpen = (event: any) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(true)
+  }
+
+  const handleClose = (event: any) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(true)
+  }
+
   return (
     <Box
       sx={{
         py: 2,
       }}
     >
-      <InputBase
-        placeholder="Search Twitter"
-        sx={{
-          width: "100%",
-          backgroundColor: "#eff3f4",
-          px: 2,
-          py: 0.5,
-          borderRadius: 30,
-        }}
-      />
+      {/* TODO: Fix layout shift */}
+      <ClickAwayListener onClickAway={handleClose}>
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+          }}
+        >
+          <InputBase
+            onFocus={handleOpen}
+            onBlur={handleClose}
+            placeholder="Search Twitter"
+            sx={{
+              width: "100%",
+              backgroundColor: "#eff3f4",
+              px: 2,
+              py: 0.5,
+              borderRadius: 30,
+            }}
+          />
+
+          <Popper open={open} anchorEl={anchorEl} placement="bottom" transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+        </Box>
+      </ClickAwayListener>
+
       <Box
         sx={{
           maxWidth: "100%",

@@ -93,37 +93,50 @@ const SearchResultsPopper = ({ isOpen, results }: SearchResultsPopperProps) => {
       }}
     >
       <Stack spacing={1}>
-        {results?.map((result) => (
-          <Stack key={result.username} direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              src={result.avatar || undefined}
-              sx={{
-                width: 50,
-                height: 50,
-              }}
-            />
-            <Stack>
-              <Typography
-                component="span"
+        {results && !results.length ? (
+          <Typography
+            sx={{
+              textAlign: "center",
+              typography: "body2",
+              letterSpacing: "0.5px",
+              color: "text.secondary",
+            }}
+          >
+            No search results...
+          </Typography>
+        ) : (
+          results?.map((result) => (
+            <Stack key={result.username} direction="row" alignItems="center" spacing={1}>
+              <Avatar
+                src={result.avatar || undefined}
                 sx={{
-                  typography: "body2",
-                  fontWeight: "bold",
+                  width: 50,
+                  height: 50,
                 }}
-              >
-                {result.name}
-              </Typography>
-              <Typography
-                component="span"
-                sx={{
-                  typography: "body2",
-                  fontWeight: "normal",
-                }}
-              >
-                @{result.username}
-              </Typography>
+              />
+              <Stack>
+                <Typography
+                  component="span"
+                  sx={{
+                    typography: "body2",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {result.name}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    typography: "body2",
+                    fontWeight: "normal",
+                  }}
+                >
+                  @{result.username}
+                </Typography>
+              </Stack>
             </Stack>
-          </Stack>
-        ))}
+          ))
+        )}
       </Stack>
     </Box>
   )

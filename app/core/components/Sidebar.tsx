@@ -8,10 +8,11 @@ import ListItem from "@mui/material/ListItem"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import InputBase from "@mui/material/InputBase"
-import Popper from "@mui/material/Popper"
-import Fade from "@mui/material/Fade"
-import Paper from "@mui/material/Paper"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
+import Stack from "@mui/material/Stack"
+// Blitz
+import { useQuery } from "blitz"
+import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
 
 const PersonToFollow = () => {
   return (
@@ -63,19 +64,85 @@ const PersonToFollow = () => {
   )
 }
 
-const WhoToFollowSection = () => {
-  // TODO: Fix typings
-  const [anchorEl, setAnchorEl] = React.useState<any | null>(null)
-  const [open, setOpen] = React.useState(false)
+interface SearchResultsPopperProps {
+  isOpen: boolean
+  results:
+    | {
+        username: string
+        name: string
+        avatar: string | null
+      }[]
+    | undefined
+}
+const SearchResultsPopper = ({ isOpen, results }: SearchResultsPopperProps) => {
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top: "100%",
+        left: 0,
+        right: 0,
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 2,
+        display: isOpen ? "block" : "none",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
+        p: 2,
+        zIndex: "tooltip",
+        // TODO: add max height and scroll
+      }}
+    >
+      <Stack spacing={1}>
+        {results?.map((result) => (
+          <Stack key={result.username} direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              src={result.avatar || undefined}
+              sx={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Stack>
+              <Typography
+                component="span"
+                sx={{
+                  typography: "body2",
+                  fontWeight: "bold",
+                }}
+              >
+                {result.name}
+              </Typography>
+              <Typography
+                component="span"
+                sx={{
+                  typography: "body2",
+                  fontWeight: "normal",
+                }}
+              >
+                @{result.username}
+              </Typography>
+            </Stack>
+          </Stack>
+        ))}
+      </Stack>
+    </Box>
+  )
+}
 
-  const handleOpen = (event: any) => {
-    setAnchorEl(event.currentTarget)
-    setOpen(true)
+const WhoToFollowSection = () => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false)
+  const [searchParam, setSearchParam] = React.useState<string>("")
+
+  const handleOpen = () => {
+    setIsOpen(true)
   }
 
-  const handleClose = (event: any) => {
-    setAnchorEl(event.currentTarget)
-    setOpen(true)
+  const handleClose = () => {
+    setIsOpen(false)
+  }
+
+  const handleChange = (event: any) => {
+    setSearchParam(event.target.value)
   }
 
   return (
@@ -84,7 +151,6 @@ const WhoToFollowSection = () => {
         py: 2,
       }}
     >
-      {/* TODO: Fix layout shift */}
       <ClickAwayListener onClickAway={handleClose}>
         <Box
           sx={{
@@ -94,7 +160,7 @@ const WhoToFollowSection = () => {
         >
           <InputBase
             onFocus={handleOpen}
-            onBlur={handleClose}
+            onChange={handleChange}
             placeholder="Search Twitter"
             sx={{
               width: "100%",
@@ -104,16 +170,8 @@ const WhoToFollowSection = () => {
               borderRadius: 30,
             }}
           />
-
-          <Popper open={open} anchorEl={anchorEl} placement="bottom" transition>
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <Paper>
-                  <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
-                </Paper>
-              </Fade>
-            )}
-          </Popper>
+          {/* TODO: Fix layout flash */}
+          <SearchResultsPopper isOpen={isOpen} results={useGetUsersBySearch(searchParam)} />
         </Box>
       </ClickAwayListener>
 

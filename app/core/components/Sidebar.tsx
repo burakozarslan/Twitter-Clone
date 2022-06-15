@@ -23,50 +23,52 @@ interface PersonToFollowProps {
 }
 const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => {
   return (
-    <ListItem
-      disableGutters
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <Avatar src={avatar || undefined} />
-      <Box
+    <ListItem disableGutters>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          width: "100%",
         }}
       >
-        <Typography
-          component="span"
+        <Stack direction="row" spacing={2}>
+          <Avatar src={avatar || undefined} />
+          <Stack>
+            <Typography
+              component="span"
+              sx={{
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              {name}
+            </Typography>
+            <Typography
+              component="span"
+              sx={{
+                fontSize: 14,
+              }}
+            >
+              @{username}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Button
+          variant="contained"
+          size="small"
           sx={{
-            fontSize: 15,
+            backgroundColor: "black",
+            color: "white",
+            borderRadius: 10,
+            textTransform: "none",
             fontWeight: "bold",
+            height: 30,
           }}
         >
-          {name}
-        </Typography>
-        <Typography
-          component="span"
-          sx={{
-            fontSize: 14,
-          }}
-        >
-          @{username}
-        </Typography>
-      </Box>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: "black",
-          color: "white",
-          borderRadius: 30,
-          textTransform: "none",
-          fontWeight: "bold",
-        }}
-      >
-        Follow
-      </Button>
+          Follow
+        </Button>
+      </Stack>
     </ListItem>
   )
 }

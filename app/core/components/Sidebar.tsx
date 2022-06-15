@@ -13,8 +13,15 @@ import Stack from "@mui/material/Stack"
 // Blitz
 import { useQuery } from "blitz"
 import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
+import getRandomUnfollowedUsers from "app/users/queries/getRandomUnfollowedUsers"
 
-const PersonToFollow = () => {
+interface PersonToFollowProps {
+  id: number
+  name: string
+  username: string
+  avatar: string | null
+}
+const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => {
   return (
     <ListItem
       disableGutters
@@ -23,7 +30,7 @@ const PersonToFollow = () => {
         justifyContent: "space-between",
       }}
     >
-      <Avatar />
+      <Avatar src={avatar || undefined} />
       <Box
         sx={{
           display: "flex",
@@ -37,7 +44,7 @@ const PersonToFollow = () => {
             fontWeight: "bold",
           }}
         >
-          Name Surname
+          {name}
         </Typography>
         <Typography
           component="span"
@@ -45,7 +52,7 @@ const PersonToFollow = () => {
             fontSize: 14,
           }}
         >
-          @username
+          @{username}
         </Typography>
       </Box>
       <Button
@@ -146,6 +153,10 @@ const WhoToFollowSection = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   const [searchParam, setSearchParam] = React.useState<string>("")
 
+  const [unfollowedUsers] = useQuery(getRandomUnfollowedUsers, undefined, {
+    suspense: false,
+  })
+
   const handleOpen = () => {
     setIsOpen(true)
   }
@@ -209,9 +220,15 @@ const WhoToFollowSection = () => {
           Who to follow
         </Typography>
         <List>
-          <PersonToFollow />
-          <PersonToFollow />
-          <PersonToFollow />
+          {unfollowedUsers?.map((user) => (
+            <PersonToFollow
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              username={user.username}
+              avatar={user.avatar}
+            />
+          ))}
         </List>
       </Box>
     </Box>

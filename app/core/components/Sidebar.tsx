@@ -10,6 +10,7 @@ import Button from "@mui/material/Button"
 import InputBase from "@mui/material/InputBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Stack from "@mui/material/Stack"
+import CircularProgress from "@mui/material/CircularProgress"
 // Blitz
 import { useQuery, useMutation } from "blitz"
 import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
@@ -159,7 +160,7 @@ const WhoToFollowSection = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
   const [searchParam, setSearchParam] = React.useState<string>("")
 
-  const [unfollowedUsers] = useQuery(getRandomUnfollowedUsers, undefined, {
+  const [unfollowedUsers, { isLoading }] = useQuery(getRandomUnfollowedUsers, undefined, {
     suspense: false,
   })
 
@@ -208,6 +209,7 @@ const WhoToFollowSection = () => {
       <Box
         sx={{
           maxWidth: "100%",
+          minHeight: 240,
           backgroundColor: "#f7f9f9",
           mt: 2,
           borderRadius: 5,
@@ -225,6 +227,17 @@ const WhoToFollowSection = () => {
         >
           Who to follow
         </Typography>
+        {isLoading && (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress color="primary" size={25} />
+          </Box>
+        )}
         <List>
           {unfollowedUsers?.map((user) => (
             <PersonToFollow

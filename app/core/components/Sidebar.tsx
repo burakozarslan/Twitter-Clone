@@ -11,9 +11,10 @@ import InputBase from "@mui/material/InputBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Stack from "@mui/material/Stack"
 // Blitz
-import { useQuery } from "blitz"
+import { useQuery, useMutation } from "blitz"
 import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
 import getRandomUnfollowedUsers from "app/users/queries/getRandomUnfollowedUsers"
+import followUser from "app/users/mutations/followUser"
 
 interface PersonToFollowProps {
   id: number
@@ -22,6 +23,8 @@ interface PersonToFollowProps {
   avatar: string | null
 }
 const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => {
+  const [followUserMutation] = useMutation(followUser)
+
   return (
     <ListItem disableGutters>
       <Stack
@@ -55,6 +58,7 @@ const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => 
           </Stack>
         </Stack>
         <Button
+          onClick={async () => followUserMutation({ id })}
           variant="contained"
           size="small"
           sx={{

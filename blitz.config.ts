@@ -1,6 +1,9 @@
 import { BlitzConfig, sessionMiddleware, simpleRolesIsAuthorized } from "blitz"
 
 const config: BlitzConfig = {
+  images: {
+    domains: ["images.unsplash.com"],
+  },
   middleware: [
     sessionMiddleware({
       cookiePrefix: "Twitter-Clone",

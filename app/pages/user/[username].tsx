@@ -1,4 +1,4 @@
-import { BlitzPage, Image } from "blitz"
+import { BlitzPage, Image, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 // Mui
 import Box from "@mui/material/Box"
@@ -10,8 +10,16 @@ import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 
 const ProfilePage: BlitzPage = () => {
+  const router = useRouter()
+
+  console.log(router.query.username)
+
   return (
-    <>
+    <Box
+      sx={{
+        borderBottom: "1px solid #eaeaea",
+      }}
+    >
       {/* Box with Aspect Ratio */}
       <Box
         sx={{
@@ -116,7 +124,7 @@ const ProfilePage: BlitzPage = () => {
           </Stack>
         </Stack>
       </Box>
-    </>
+    </Box>
   )
 }
 

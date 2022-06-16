@@ -212,7 +212,7 @@ const HomeFeed = () => {
   })
 
   return (
-    <ContentWrapper>
+    <Box>
       <SendTweetForm />
       {isLoading && (
         <Box
@@ -236,7 +236,7 @@ const HomeFeed = () => {
           refetch={refetch}
         />
       ))}
-    </ContentWrapper>
+    </Box>
   )
 }
 

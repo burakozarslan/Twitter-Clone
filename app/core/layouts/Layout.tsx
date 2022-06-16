@@ -53,8 +53,6 @@ const Layout: BlitzLayout<{ title?: string; children?: React.ReactNode }> = ({
           </Box>
         </Box>
       </Box>
-
-      {children}
     </>
   )
 }

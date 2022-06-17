@@ -23,6 +23,7 @@ model User {
   hashedPassword String?
   avatar         String?
   bannerImage    String?
+  location       String?
   role           String   @default("USER")
 
   tokens   Token[]

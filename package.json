@@ -29,7 +29,6 @@
     "@emotion/server": "11.x",
     "@emotion/styled": "11.x",
     "@hookform/resolvers": "2.9.0",
-    "@mui/joy": "5.0.0-alpha.32",
     "@mui/material": "5.x",
     "@prisma/client": "3.15.1",
     "blitz": "0.45.4",

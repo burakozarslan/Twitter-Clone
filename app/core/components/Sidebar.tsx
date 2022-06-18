@@ -11,8 +11,9 @@ import InputBase from "@mui/material/InputBase"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import Stack from "@mui/material/Stack"
 import CircularProgress from "@mui/material/CircularProgress"
+import Link from "@mui/material/Link"
 // Blitz
-import { useQuery, useMutation } from "blitz"
+import { useQuery, useMutation, Routes, Link as BlitzLink } from "blitz"
 import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
 import getRandomUnfollowedUsers from "app/users/queries/getRandomUnfollowedUsers"
 import followUser from "app/users/mutations/followUser"
@@ -39,15 +40,24 @@ const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => 
         <Stack direction="row" spacing={2}>
           <Avatar src={avatar || undefined} />
           <Stack>
-            <Typography
-              component="span"
-              sx={{
-                fontSize: 15,
-                fontWeight: "bold",
-              }}
+            <BlitzLink
+              passHref
+              href={Routes.ProfilePage({
+                username,
+              })}
             >
-              {name}
-            </Typography>
+              <Link underline="hover" color="#222">
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {name}
+                </Typography>
+              </Link>
+            </BlitzLink>
             <Typography
               component="span"
               sx={{

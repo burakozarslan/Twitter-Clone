@@ -130,35 +130,49 @@ const SearchResultsPopper = ({ isOpen, results }: SearchResultsPopperProps) => {
           </Typography>
         ) : (
           results?.map((result) => (
-            <Stack key={result.username} direction="row" alignItems="center" spacing={1}>
-              <Avatar
-                src={result.avatar || undefined}
+            <BlitzLink
+              key={result.username}
+              href={Routes.ProfilePage({
+                username: result.username,
+              })}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
                 sx={{
-                  width: 50,
-                  height: 50,
+                  cursor: "pointer",
                 }}
-              />
-              <Stack>
-                <Typography
-                  component="span"
+              >
+                <Avatar
+                  src={result.avatar || undefined}
                   sx={{
-                    typography: "body2",
-                    fontWeight: "bold",
+                    width: 50,
+                    height: 50,
                   }}
-                >
-                  {result.name}
-                </Typography>
-                <Typography
-                  component="span"
-                  sx={{
-                    typography: "body2",
-                    fontWeight: "normal",
-                  }}
-                >
-                  @{result.username}
-                </Typography>
+                />
+                <Stack>
+                  <Typography
+                    component="span"
+                    sx={{
+                      typography: "body2",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {result.name}
+                  </Typography>
+                  <Typography
+                    component="span"
+                    sx={{
+                      typography: "body2",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    @{result.username}
+                  </Typography>
+                </Stack>
               </Stack>
-            </Stack>
+            </BlitzLink>
           ))
         )}
       </Stack>

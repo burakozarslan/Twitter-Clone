@@ -1,6 +1,6 @@
 import * as React from "react"
 // Blitz
-import { useMutation } from "blitz"
+import { useMutation, Link as BlitzLink, Routes } from "blitz"
 import unfollowUser from "app/users/mutations/unfollowUser"
 // Material UI
 import Box from "@mui/material/Box"
@@ -10,6 +10,7 @@ import Popper from "@mui/material/Popper"
 import Fade from "@mui/material/Fade"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
+import Link from "@mui/material/Link"
 // Icons
 import { BsChat, BsHeart, BsThreeDots } from "react-icons/bs"
 
@@ -86,9 +87,13 @@ const Tweet = ({
           }}
         >
           <Box onMouseEnter={handleOpenPopper} onMouseLeave={handleClosePopper}>
-            <Typography aria-describedby={id} sx={{ fontWeight: "bold" }} component="span">
-              {authorName}
-            </Typography>
+            <BlitzLink href={Routes.ProfilePage({ username: authorUsername })} passHref>
+              <Link underline="hover" color="#222">
+                <Typography aria-describedby={id} sx={{ fontWeight: "bold" }} component="span">
+                  {authorName}
+                </Typography>
+              </Link>
+            </BlitzLink>
             <Popper id={id} open={open} anchorEl={anchorEl} transition>
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps} timeout={350}>

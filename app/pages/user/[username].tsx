@@ -14,8 +14,10 @@ import { HiOutlineLocationMarker, HiOutlineCalendar } from "react-icons/hi"
 import { BlitzPage, Image, useParam, useQuery } from "blitz"
 import getUserProfileInfo from "app/users/queries/getUserProfileInfo"
 import getUserTweets from "app/tweets/queries/getUserTweets"
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 
 const ProfilePage: BlitzPage = () => {
+  const currentUser = useCurrentUser()
   const routeUsername = useParam("username")
   const [profileInfo] = useQuery(
     getUserProfileInfo,
@@ -90,20 +92,37 @@ const ProfilePage: BlitzPage = () => {
               border: "4px solid white",
             }}
           />
-          <Button
-            variant="contained"
-            size="medium"
-            sx={{
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: 10,
-              textTransform: "none",
-              fontWeight: "bold",
-              height: 30,
-            }}
-          >
-            Follow
-          </Button>
+          {currentUser?.username === profileInfo.username ? (
+            <Button
+              variant="outlined"
+              color="inherit"
+              sx={{
+                typography: "body2",
+                fontWeight: "bold",
+                textTransform: "none",
+                letterSpacing: "0.5px",
+                borderRadius: 10,
+                border: "1px solid #aaa",
+              }}
+            >
+              Edit Profile
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              size="medium"
+              sx={{
+                backgroundColor: "black",
+                color: "white",
+                borderRadius: 10,
+                textTransform: "none",
+                fontWeight: "bold",
+                height: 30,
+              }}
+            >
+              Follow
+            </Button>
+          )}
         </Stack>
         <Box
           sx={{

@@ -137,7 +137,11 @@ const ProfilePage: BlitzPage = () => {
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <HiOutlineCalendar color="gray" />
               <Typography component="span" variant="body2" color="GrayText">
-                {profileInfo?.createdAt.toLocaleString()}
+                Joined{" "}
+                {profileInfo?.createdAt.toLocaleString("default", {
+                  month: "long",
+                  year: "numeric",
+                })}
               </Typography>
             </Stack>
           </Stack>

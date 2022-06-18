@@ -6,33 +6,29 @@ const SearchType = z.object({
   searchBy: z.string(),
 })
 
-export default resolver.pipe(
-  resolver.zod(SearchType),
-  resolver.authorize(),
-  async ({ searchBy }) => {
-    const result = await db.user.findMany({
-      take: 10,
-      where: {
-        OR: [
-          {
-            name: {
-              startsWith: searchBy,
-            },
+export default resolver.pipe(resolver.zod(SearchType), async ({ searchBy }) => {
+  const result = await db.user.findMany({
+    take: 10,
+    where: {
+      OR: [
+        {
+          name: {
+            startsWith: searchBy,
           },
-          {
-            username: {
-              startsWith: searchBy,
-            },
+        },
+        {
+          username: {
+            startsWith: searchBy,
           },
-        ],
-      },
-      select: {
-        name: true,
-        username: true,
-        avatar: true,
-      },
-    })
+        },
+      ],
+    },
+    select: {
+      name: true,
+      username: true,
+      avatar: true,
+    },
+  })
 
-    return result
-  }
-)
+  return result
+})

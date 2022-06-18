@@ -1,22 +1,47 @@
-import { BlitzPage, Image, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 // Components
 import Tweet from "app/core/components/Tweet"
 // Mui
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import AspectRatio from "@mui/joy/AspectRatio"
-import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
+import CircularProgress from "@mui/material/CircularProgress"
 // Icons
 import { HiOutlineLocationMarker, HiOutlineCalendar } from "react-icons/hi"
+// Blitz
+import { BlitzPage, Image, useParam, useQuery } from "blitz"
+import getUserProfileInfo from "app/users/queries/getUserProfileInfo"
+import getUserTweets from "app/tweets/queries/getUserTweets"
 
 const ProfilePage: BlitzPage = () => {
-  const router = useRouter()
+  const routeUsername = useParam("username")
+  const [profileInfo] = useQuery(
+    getUserProfileInfo,
+    {
+      username: routeUsername as string,
+    },
+    {
+      suspense: false,
+    }
+  )
+  const [userTweets] = useQuery(
+    getUserTweets,
+    {
+      username: routeUsername as string,
+    },
+    {
+      suspense: false,
+    }
+  )
 
-  console.log(router.query.username)
+  if (!profileInfo)
+    return (
+      <Stack justifyContent="center" direction="row">
+        <CircularProgress color="primary" size={25} />
+      </Stack>
+    )
 
   return (
     <Box>
@@ -45,7 +70,7 @@ const ProfilePage: BlitzPage = () => {
             }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1655365035044-667fbccc2abe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2574&q=80"
+              src={profileInfo.bannerImage || ""}
               alt="cover"
               width="100%"
               height="100%"
@@ -57,7 +82,7 @@ const ProfilePage: BlitzPage = () => {
         </Box>
         <Stack direction="row" alignItems="center" justifyContent="space-between" px={2}>
           <Avatar
-            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+            src={profileInfo?.avatar || undefined}
             sx={{
               width: 135,
               height: 135,
@@ -87,10 +112,10 @@ const ProfilePage: BlitzPage = () => {
           }}
         >
           <Typography component="div" variant="h5" fontWeight="bold">
-            John Doe
+            {profileInfo?.name}
           </Typography>
           <Typography component="div" variant="body2" color="GrayText" letterSpacing={0.5}>
-            @johndoe
+            @{profileInfo?.username}
           </Typography>
           <Typography
             component="p"
@@ -106,20 +131,20 @@ const ProfilePage: BlitzPage = () => {
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <HiOutlineLocationMarker color="gray" />
               <Typography component="span" variant="body2" color="GrayText">
-                NY, US
+                {profileInfo?.location}
               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <HiOutlineCalendar color="gray" />
               <Typography component="span" variant="body2" color="GrayText">
-                Joined June 2010
+                {profileInfo?.createdAt.toLocaleString()}
               </Typography>
             </Stack>
           </Stack>
           <Stack direction="row" spacing={4} mt={1}>
             <Stack direction="row" spacing={0.5} alignItems="center">
               <Typography component="span" variant="body2" fontWeight="bold">
-                60
+                {profileInfo?._count.followees}
               </Typography>
               <Typography component="span" variant="body2" color="GrayText">
                 Following
@@ -127,7 +152,7 @@ const ProfilePage: BlitzPage = () => {
             </Stack>
             <Stack direction="row" spacing={0.5} alignItems="center">
               <Typography component="span" variant="body2" fontWeight="bold">
-                19878
+                {profileInfo?._count.followers}
               </Typography>
               <Typography component="span" variant="body2" color="GrayText">
                 Followers
@@ -136,33 +161,28 @@ const ProfilePage: BlitzPage = () => {
           </Stack>
         </Box>
       </Box>
-      <Tweet
-        key={1}
-        authorId={1}
-        authorName={"Jane Doe"}
-        authorUsername={"janedoe"}
-        authorAvatar={"https://randomuser.me/api/portraits/women/3.jpg"}
-        body={
-          "Journalists covering this story and reporting on Rwanda really need to do their research rather than promoting a brutal dictatorship. As former Tory leader Iain Duncan Smith told Parliament: ‘This man should be sanctioned, not sent as their bloody ambassador’"
-        }
-        refetch={() => {}}
-      />
-      <Tweet
-        key={2}
-        authorId={1}
-        authorName={"Jane Doe"}
-        authorUsername={"janedoe"}
-        authorAvatar={"https://randomuser.me/api/portraits/women/3.jpg"}
-        body={
-          "Journalists covering this story and reporting on Rwanda really need to do their research rather than promoting a brutal dictatorship. As former Tory leader Iain Duncan Smith told Parliament: ‘This man should be sanctioned, not sent as their bloody ambassador’"
-        }
-        refetch={() => {}}
-      />
+      {!userTweets ? (
+        <Stack justifyContent="center" direction="row">
+          <CircularProgress color="primary" size={25} />
+        </Stack>
+      ) : (
+        userTweets.map((tweet) => (
+          <Tweet
+            key={tweet.id}
+            authorId={tweet.authorId}
+            authorName={tweet.author.name}
+            authorUsername={tweet.author.username}
+            authorAvatar={tweet.author.avatar}
+            body={tweet.body}
+            refetch={() => {}}
+          />
+        ))
+      )}
     </Box>
   )
 }
 
-ProfilePage.authenticate = true
+// ProfilePage.authenticate = true
 ProfilePage.getLayout = (page) => <Layout title="Profile Page">{page}</Layout>
 
 export default ProfilePage

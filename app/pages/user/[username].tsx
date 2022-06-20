@@ -108,6 +108,7 @@ const ProfilePage: BlitzPage = () => {
               Edit Profile
             </Button>
           ) : (
+            // TODO: conditionally render follow and unfollow buttons
             <Button
               variant="contained"
               size="medium"
@@ -120,7 +121,7 @@ const ProfilePage: BlitzPage = () => {
                 height: 30,
               }}
             >
-              Follow
+              {profileInfo.isFollowing ? "Following" : "Follow"}
             </Button>
           )}
         </Stack>

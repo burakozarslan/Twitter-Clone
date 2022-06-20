@@ -1,5 +1,5 @@
 import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import db, { User } from "db"
 import { z } from "zod"
 
 const ProfileType = z.object({
@@ -11,6 +11,8 @@ export default async function getUserProfileInfo(
   { session }: Ctx
 ) {
   ProfileType.parse(input)
+
+  let isFollowing: boolean = false
 
   const user = await db.user.findUnique({
     where: { username: input.username },
@@ -34,5 +36,27 @@ export default async function getUserProfileInfo(
 
   if (!user) throw new NotFoundError()
 
-  return user
+  if (session.$isAuthorized()) {
+    const following = await db.follows.findUnique({
+      where: {
+        followerId_followeeId: {
+          followerId: session.userId as number,
+          followeeId: user.id,
+        },
+      },
+    })
+
+    isFollowing = !!following
+  }
+
+  type UserProfileInfoType = typeof user & {
+    isFollowing: boolean
+  }
+
+  const userProfileInfo: UserProfileInfoType = {
+    ...user,
+    isFollowing,
+  }
+
+  return userProfileInfo
 }

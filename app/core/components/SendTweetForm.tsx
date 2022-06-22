@@ -2,6 +2,8 @@ import { SendTweetSchema } from "app/tweets/validations"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { useMutation } from "blitz"
+import sendTweet from "app/tweets/mutations/sendTweet"
 // Material UI
 import Typography from "@mui/material/Typography"
 import InputBase from "@mui/material/InputBase"
@@ -12,6 +14,8 @@ import IconButton from "@mui/material/IconButton"
 import { MdOutlinePermMedia } from "react-icons/md"
 
 const SendTweetForm = () => {
+  const [sendTweetMutation] = useMutation(sendTweet)
+
   const {
     register,
     handleSubmit,
@@ -19,7 +23,9 @@ const SendTweetForm = () => {
   } = useForm<z.infer<typeof SendTweetSchema>>({
     resolver: zodResolver(SendTweetSchema),
   })
-  const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => {
+    sendTweetMutation(data)
+  }
 
   return (
     <Stack

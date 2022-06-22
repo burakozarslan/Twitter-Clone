@@ -19,12 +19,17 @@ const SendTweetForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof SendTweetSchema>>({
     resolver: zodResolver(SendTweetSchema),
   })
   const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => {
-    sendTweetMutation(data)
+    sendTweetMutation(data, {
+      onSuccess: () => {
+        reset()
+      },
+    })
   }
 
   return (

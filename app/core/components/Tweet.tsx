@@ -51,7 +51,6 @@ const Tweet = ({
   const canBeOpen = open && Boolean(anchorEl)
   const id = canBeOpen ? "transition-popper" : undefined
 
-  // TODO: Fix tweet body alignment
   return (
     <Box
       sx={{

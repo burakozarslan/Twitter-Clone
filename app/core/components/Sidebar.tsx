@@ -17,6 +17,8 @@ import { useQuery, useMutation, Routes, Link as BlitzLink } from "blitz"
 import { useGetUsersBySearch } from "../hooks/useGetUsersBySearch"
 import getRandomUnfollowedUsers from "app/users/queries/getRandomUnfollowedUsers"
 import followUser from "app/users/mutations/followUser"
+// Components
+import FollowUnfollowButton from "app/core/components/FollowUnfollowButton"
 
 interface PersonToFollowProps {
   id: number
@@ -68,7 +70,8 @@ const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => 
             </Typography>
           </Stack>
         </Stack>
-        <Button
+        <FollowUnfollowButton
+          isFollowing={false}
           onClick={async () => followUserMutation({ id })}
           variant="contained"
           size="small"
@@ -80,9 +83,7 @@ const PersonToFollow = ({ id, name, username, avatar }: PersonToFollowProps) => 
             fontWeight: "bold",
             height: 30,
           }}
-        >
-          Follow
-        </Button>
+        />
       </Stack>
     </ListItem>
   )

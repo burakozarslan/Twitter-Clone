@@ -69,6 +69,7 @@ const SendTweetForm = () => {
         key={123}
         onClose={() => setOpen(false)}
       />
+      {/* TODO: Add rows on input */}
       <InputBase
         {...register("body")}
         autoComplete="off"

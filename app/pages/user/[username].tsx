@@ -1,6 +1,7 @@
 import Layout from "app/core/layouts/Layout"
 // Components
 import Tweet from "app/core/components/Tweet"
+import FollowUnfollowButton from "app/core/components/FollowUnfollowButton"
 // Mui
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
@@ -109,20 +110,7 @@ const ProfilePage: BlitzPage = () => {
             </Button>
           ) : (
             // TODO: conditionally render follow and unfollow buttons
-            <Button
-              variant="contained"
-              size="medium"
-              sx={{
-                backgroundColor: "black",
-                color: "white",
-                borderRadius: 10,
-                textTransform: "none",
-                fontWeight: "bold",
-                height: 30,
-              }}
-            >
-              {profileInfo.isFollowing ? "Following" : "Follow"}
-            </Button>
+            <FollowUnfollowButton isFollowing={profileInfo?.isFollowing} size="medium" />
           )}
         </Stack>
         <Box

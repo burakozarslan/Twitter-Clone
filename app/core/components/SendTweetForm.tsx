@@ -5,8 +5,11 @@ import { z } from "zod"
 // Material UI
 import Typography from "@mui/material/Typography"
 import InputBase from "@mui/material/InputBase"
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import Stack from "@mui/material/Stack"
+import IconButton from "@mui/material/IconButton"
+// Icons
+import { MdOutlinePermMedia } from "react-icons/md"
 
 const SendTweetForm = () => {
   const {
@@ -19,11 +22,48 @@ const SendTweetForm = () => {
   const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => console.log(data)
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <InputBase {...register("body")} placeholder="New tweet" />
+    <Stack
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        p: 3,
+        borderBottom: "1px solid #eaeaea",
+      }}
+    >
+      <InputBase
+        {...register("body")}
+        autoComplete="off"
+        placeholder="What's happening?"
+        sx={{
+          fontSize: "1.2rem",
+          width: "100%",
+          mb: 2,
+        }}
+      />
       <Typography component="p">{errors.body?.message}</Typography>
-      <Button type="submit">Send</Button>
-    </Box>
+      <Stack direction="row" justifyContent="space-between">
+        <IconButton
+          sx={{
+            color: "rgb(29, 155, 240)",
+          }}
+        >
+          <MdOutlinePermMedia size={18} />
+        </IconButton>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            textTransform: "none",
+            borderRadius: 10,
+            fontWeight: "bold",
+            backgroundColor: "rgb(29, 155, 240)",
+            fontSize: 15,
+          }}
+        >
+          Tweet
+        </Button>
+      </Stack>
+    </Stack>
   )
 }
 

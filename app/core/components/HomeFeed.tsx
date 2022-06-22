@@ -1,6 +1,7 @@
 import * as React from "react"
 // Components
 import Tweet from "./Tweet"
+import SendTweetForm from "./SendTweetForm"
 // Material UI
 import Box from "@mui/material/Box"
 import Avatar from "@mui/material/Avatar"
@@ -22,29 +23,6 @@ import { z } from "zod"
 import { useMutation, useQuery } from "blitz"
 import getHomeFeedTweets from "app/tweets/queries/getHomeFeedTweets"
 import unfollowUser from "app/users/mutations/unfollowUser"
-
-const SendTweetSchema = z.object({
-  body: z.string().max(280),
-})
-
-const SendTweetForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof SendTweetSchema>>({
-    resolver: zodResolver(SendTweetSchema),
-  })
-  const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => console.log(data)
-
-  return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <InputBase {...register("body")} placeholder="New tweet" />
-      <Typography component="p">{errors.body?.message}</Typography>
-      <Button type="submit">Send</Button>
-    </Box>
-  )
-}
 
 const HomeFeed = () => {
   const [homeFeedTweets, { refetch, isLoading }] = useQuery(getHomeFeedTweets, undefined, {

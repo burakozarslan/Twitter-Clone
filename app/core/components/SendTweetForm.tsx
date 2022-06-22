@@ -27,9 +27,11 @@ const SendTweetForm = () => {
     register,
     handleSubmit,
     reset,
+    trigger,
     formState: { errors },
   } = useForm<z.infer<typeof SendTweetSchema>>({
     resolver: zodResolver(SendTweetSchema),
+    mode: "onChange",
   })
   const onSubmit: SubmitHandler<z.infer<typeof SendTweetSchema>> = (data) => {
     sendTweetMutation(data, {
@@ -46,6 +48,10 @@ const SendTweetForm = () => {
       },
     })
   }
+
+  React.useEffect(() => {
+    trigger("body")
+  }, [trigger])
 
   return (
     <Stack
@@ -73,7 +79,11 @@ const SendTweetForm = () => {
           mb: 2,
         }}
       />
-      <Typography component="p">{errors.body?.message}</Typography>
+      {errors.body?.type === "too_big" && (
+        <Typography component="p" color="error">
+          {errors.body.message}
+        </Typography>
+      )}
       <Stack direction="row" justifyContent="space-between">
         <IconButton
           sx={{
@@ -85,6 +95,7 @@ const SendTweetForm = () => {
         <Button
           type="submit"
           variant="contained"
+          disabled={!!errors.body}
           sx={{
             textTransform: "none",
             borderRadius: 10,

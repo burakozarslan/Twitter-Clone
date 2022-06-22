@@ -1,3 +1,5 @@
+import * as React from "react"
+// Blitz
 import { SendTweetSchema } from "app/tweets/validations"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -10,11 +12,16 @@ import InputBase from "@mui/material/InputBase"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import IconButton from "@mui/material/IconButton"
+// Components
+import StyledSnackbar from "app/core/components/StyledSnackbar"
 // Icons
 import { MdOutlinePermMedia } from "react-icons/md"
 
 const SendTweetForm = () => {
   const [sendTweetMutation] = useMutation(sendTweet)
+  const [message, setMessage] = React.useState<string>("")
+  const [status, setStatus] = React.useState<"success" | "error" | "info" | "warning">("success")
+  const [open, setOpen] = React.useState<boolean>(false)
 
   const {
     register,
@@ -28,6 +35,14 @@ const SendTweetForm = () => {
     sendTweetMutation(data, {
       onSuccess: () => {
         reset()
+        setMessage("Tweet sent!")
+        setStatus("success")
+        setOpen(true)
+      },
+      onError: () => {
+        setMessage("Something went wrong!")
+        setStatus("error")
+        setOpen(true)
       },
     })
   }
@@ -41,6 +56,13 @@ const SendTweetForm = () => {
         borderBottom: "1px solid #eaeaea",
       }}
     >
+      <StyledSnackbar
+        isOpen={open}
+        message={message}
+        status={status}
+        key={123}
+        onClose={() => setOpen(false)}
+      />
       <InputBase
         {...register("body")}
         autoComplete="off"

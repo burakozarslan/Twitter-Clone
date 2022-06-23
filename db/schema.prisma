@@ -24,6 +24,7 @@ model User {
   avatar         String?
   bannerImage    String?
   location       String?
+  bio            String?
   role           String   @default("USER")
 
   tokens   Token[]

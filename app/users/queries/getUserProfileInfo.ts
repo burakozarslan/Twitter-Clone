@@ -24,6 +24,7 @@ export default async function getUserProfileInfo(
       avatar: true,
       bannerImage: true,
       location: true,
+      bio: true,
       createdAt: true,
       _count: {
         select: {

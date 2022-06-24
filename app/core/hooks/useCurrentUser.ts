@@ -2,8 +2,11 @@ import { useQuery } from "blitz"
 import getCurrentUser from "app/users/queries/getCurrentUser"
 
 export const useCurrentUser = () => {
-  const [user] = useQuery(getCurrentUser, null, {
+  const [currentUser, { refetch }] = useQuery(getCurrentUser, null, {
     suspense: false,
   })
-  return user
+  return {
+    currentUser,
+    refetch,
+  }
 }

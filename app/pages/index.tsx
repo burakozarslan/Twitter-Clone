@@ -11,7 +11,7 @@ import logo from "public/logo.png"
  */
 
 const UserInfo = () => {
-  const currentUser = useCurrentUser()
+  const { currentUser } = useCurrentUser()
   const [logoutMutation] = useMutation(logout)
 
   if (currentUser) {

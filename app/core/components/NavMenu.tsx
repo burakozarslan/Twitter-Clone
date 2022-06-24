@@ -96,7 +96,7 @@ const NavListItem = ({ isActive, icon, iconActive, text, clickHandler }: NavList
 }
 
 const NavMenu = () => {
-  const currentUser = useCurrentUser()
+  const { currentUser } = useCurrentUser()
   const [logoutMutation] = useMutation(logout)
   const max1294 = useMediaQuery("(max-width:1294px)")
   // TODO: Add router types

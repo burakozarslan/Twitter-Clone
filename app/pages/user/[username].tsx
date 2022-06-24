@@ -2,6 +2,7 @@ import Layout from "app/core/layouts/Layout"
 // Components
 import Tweet from "app/core/components/Tweet"
 import FollowUnfollowButton from "app/core/components/FollowUnfollowButton"
+import EditProfileButton from "app/core/components/EditProfileButton"
 // Mui
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
@@ -13,22 +14,14 @@ import CircularProgress from "@mui/material/CircularProgress"
 import { HiOutlineLocationMarker, HiOutlineCalendar } from "react-icons/hi"
 // Blitz
 import { BlitzPage, Image, useParam, useQuery } from "blitz"
-import getUserProfileInfo from "app/users/queries/getUserProfileInfo"
 import getUserTweets from "app/tweets/queries/getUserTweets"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import { useProfileInfo } from "app/users/hooks/useProfileInfo"
 
 const ProfilePage: BlitzPage = () => {
-  const currentUser = useCurrentUser()
+  const { currentUser } = useCurrentUser()
   const routeUsername = useParam("username")
-  const [profileInfo] = useQuery(
-    getUserProfileInfo,
-    {
-      username: routeUsername as string,
-    },
-    {
-      suspense: false,
-    }
-  )
+  const { profileInfo } = useProfileInfo(routeUsername as string)
   const [userTweets] = useQuery(
     getUserTweets,
     {
@@ -94,20 +87,7 @@ const ProfilePage: BlitzPage = () => {
             }}
           />
           {currentUser?.username === profileInfo.username ? (
-            <Button
-              variant="outlined"
-              color="inherit"
-              sx={{
-                typography: "body2",
-                fontWeight: "bold",
-                textTransform: "none",
-                letterSpacing: "0.5px",
-                borderRadius: 10,
-                border: "1px solid #aaa",
-              }}
-            >
-              Edit Profile
-            </Button>
+            <EditProfileButton />
           ) : (
             // TODO: conditionally render follow and unfollow buttons
             <FollowUnfollowButton isFollowing={profileInfo?.isFollowing} size="medium" />
@@ -133,7 +113,7 @@ const ProfilePage: BlitzPage = () => {
               my: 1,
             }}
           >
-            This Privacy Policy addresses the collection and use of personal information -
+            {profileInfo?.bio}
           </Typography>
           <Stack flexWrap="wrap" direction="row" spacing={2}>
             <Stack direction="row" alignItems="center" spacing={0.5}>

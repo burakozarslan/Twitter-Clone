@@ -3,6 +3,7 @@ import Layout from "app/core/layouts/Layout"
 import Tweet from "app/core/components/Tweet"
 import FollowUnfollowButton from "app/core/components/FollowUnfollowButton"
 import EditProfileButton from "app/core/components/EditProfileButton"
+import BannerImage from "app/core/components/BannerImage"
 // Mui
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
@@ -53,28 +54,7 @@ const ProfilePage: BlitzPage = () => {
             pt: "33%",
           }}
         >
-          {/* Image Wrapper */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              width: "100%",
-              overflow: "hidden",
-            }}
-          >
-            <Image
-              src={profileInfo.bannerImage || ""}
-              alt="cover"
-              width="100%"
-              height="100%"
-              layout="responsive"
-              objectFit="cover"
-              objectPosition="center"
-            />
-          </Box>
+          <BannerImage src={profileInfo.bannerImage} alt={profileInfo.username + " banner image"} />
         </Box>
         <Stack direction="row" alignItems="center" justifyContent="space-between" px={2}>
           <Avatar

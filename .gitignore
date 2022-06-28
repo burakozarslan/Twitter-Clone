@@ -57,6 +57,7 @@ lib-cov
 
 # DB
 *.sqlite
+*.db
 *.sqlite-journal
 db/migrations/*.sqlite
 db/migrations/*.sqlite-journal

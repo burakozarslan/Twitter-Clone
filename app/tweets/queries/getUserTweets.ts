@@ -23,6 +23,9 @@ export default resolver.pipe(resolver.zod(UserTweetsType), async (input) => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   })
 
   return userTweets

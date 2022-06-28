@@ -8,7 +8,7 @@ import { useMutation } from "blitz"
 import sendTweet from "app/tweets/mutations/sendTweet"
 // Material UI
 import Typography from "@mui/material/Typography"
-import InputBase from "@mui/material/InputBase"
+import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import IconButton from "@mui/material/IconButton"
@@ -70,13 +70,16 @@ const SendTweetForm = () => {
         onClose={() => setOpen(false)}
       />
       {/* TODO: Add rows on input */}
-      <InputBase
+      <TextField
         {...register("body")}
         autoComplete="off"
         placeholder="What's happening?"
+        multiline={true}
         sx={{
           fontSize: "1.2rem",
           width: "100%",
+          border: "none",
+          outline: "none",
           mb: 2,
         }}
       />

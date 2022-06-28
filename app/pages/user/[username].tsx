@@ -9,12 +9,11 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Stack from "@mui/material/Stack"
 import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
 import CircularProgress from "@mui/material/CircularProgress"
 // Icons
 import { HiOutlineLocationMarker, HiOutlineCalendar } from "react-icons/hi"
 // Blitz
-import { BlitzPage, Image, useParam, useQuery } from "blitz"
+import { BlitzPage, useParam, useQuery } from "blitz"
 import getUserTweets from "app/tweets/queries/getUserTweets"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 import { useProfileInfo } from "app/users/hooks/useProfileInfo"
@@ -96,12 +95,14 @@ const ProfilePage: BlitzPage = () => {
             {profileInfo?.bio}
           </Typography>
           <Stack flexWrap="wrap" direction="row" spacing={2}>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <HiOutlineLocationMarker color="gray" />
-              <Typography component="span" variant="body2" color="GrayText">
-                {profileInfo?.location}
-              </Typography>
-            </Stack>
+            {profileInfo?.location && (
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <HiOutlineLocationMarker color="gray" />
+                <Typography component="span" variant="body2" color="GrayText">
+                  {profileInfo.location}
+                </Typography>
+              </Stack>
+            )}
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <HiOutlineCalendar color="gray" />
               <Typography component="span" variant="body2" color="GrayText">

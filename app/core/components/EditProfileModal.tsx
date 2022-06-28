@@ -35,11 +35,11 @@ const EditProfileModal = ({ open, handleClose }: EditProfileModalProps) => {
     resolver: zodResolver(EditProfileSchema),
     mode: "onChange",
     defaultValues: {
-      bannerImage: currentUser?.bannerImage as string,
-      avatar: currentUser?.avatar as string,
-      name: currentUser?.name as string,
-      bio: currentUser?.bio as string,
-      location: currentUser?.location as string,
+      bannerImage: currentUser?.bannerImage || "",
+      avatar: currentUser?.avatar || "",
+      name: currentUser?.name || "",
+      bio: currentUser?.bio || "",
+      location: currentUser?.location || "",
     },
   })
   const onSubmit: SubmitHandler<z.infer<typeof EditProfileSchema>> = (data) => {

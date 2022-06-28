@@ -56,9 +56,7 @@ lib-cov
 .vscode-test
 
 # DB
-*.db
 *.sqlite
 *.sqlite-journal
 db/migrations/*.sqlite
-db/migrations/*.db
 db/migrations/*.sqlite-journal

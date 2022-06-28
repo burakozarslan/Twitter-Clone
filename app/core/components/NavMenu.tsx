@@ -32,20 +32,24 @@ import {
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 // Mutations
 import logout from "app/auth/mutations/logout"
-import { useMutation } from "blitz"
+import { useMutation, Routes, useRouter, RouteUrlObject } from "blitz"
 
 interface ListItemButtonWrapperProps {
   text: string
   icon: React.ReactElement
   fontWeight: string
   clickHandler: (arg: string) => void
+  target: RouteUrlObject
 }
 const ListItemButtonWrapper = ({
   text,
   icon,
   fontWeight,
   clickHandler,
+  target,
 }: ListItemButtonWrapperProps) => {
+  const router = useRouter()
+
   return (
     <ListItemButton
       sx={{
@@ -54,7 +58,10 @@ const ListItemButtonWrapper = ({
         borderRadius: 30,
         width: "fit-content",
       }}
-      onClick={() => clickHandler(text)}
+      onClick={() => {
+        clickHandler(text)
+        router.push(target)
+      }}
     >
       <ListItemIcon
         sx={{
@@ -83,14 +90,23 @@ interface NavListItemProps {
   iconActive: React.ReactElement
   text: string
   clickHandler: (arg: string) => void
+  target: RouteUrlObject
 }
-const NavListItem = ({ isActive, icon, iconActive, text, clickHandler }: NavListItemProps) => {
+const NavListItem = ({
+  isActive,
+  icon,
+  iconActive,
+  text,
+  clickHandler,
+  target,
+}: NavListItemProps) => {
   return (
     <ListItemButtonWrapper
       text={text}
       icon={isActive ? iconActive : icon}
       fontWeight={isActive ? "bold" : "normal"}
       clickHandler={clickHandler}
+      target={target}
     />
   )
 }
@@ -98,6 +114,7 @@ const NavListItem = ({ isActive, icon, iconActive, text, clickHandler }: NavList
 const NavMenu = () => {
   const { currentUser } = useCurrentUser()
   const [logoutMutation] = useMutation(logout)
+
   const max1294 = useMediaQuery("(max-width:1294px)")
   // TODO: Add router types
   const [activeNavItem, setActiveNavItem] = React.useState<string>("Home")
@@ -150,42 +167,54 @@ const NavMenu = () => {
               text="Home"
               isActive={activeNavItem === "Home"}
               clickHandler={navClickHandler}
+              target={Routes.HomePage()}
             />
-            <NavListItem
-              icon={<RiSearchLine />}
-              iconActive={<RiSearchFill />}
-              text="Search"
-              isActive={activeNavItem === "Search"}
-              clickHandler={navClickHandler}
-            />
-            <NavListItem
-              icon={<BsBell />}
-              iconActive={<BsFillBellFill />}
-              text="Notifications"
-              isActive={activeNavItem === "Notifications"}
-              clickHandler={navClickHandler}
-            />
-            <NavListItem
-              icon={<BsEnvelope />}
-              iconActive={<BsFillEnvelopeFill />}
-              text="Messages"
-              isActive={activeNavItem === "Messages"}
-              clickHandler={navClickHandler}
-            />
-            <NavListItem
-              icon={<BsBookmark />}
-              iconActive={<BsFillBookmarkFill />}
-              text="Bookmarks"
-              isActive={activeNavItem === "Bookmarks"}
-              clickHandler={navClickHandler}
-            />
-            <NavListItem
-              icon={<BsPerson />}
-              iconActive={<BsPersonFill />}
-              text="Profile"
-              isActive={activeNavItem === "Profile"}
-              clickHandler={navClickHandler}
-            />
+            {currentUser && (
+              <>
+                <NavListItem
+                  icon={<RiSearchLine />}
+                  iconActive={<RiSearchFill />}
+                  text="Search"
+                  isActive={activeNavItem === "Search"}
+                  clickHandler={navClickHandler}
+                  target={Routes.HomePage()}
+                />
+                <NavListItem
+                  icon={<BsBell />}
+                  iconActive={<BsFillBellFill />}
+                  text="Notifications"
+                  isActive={activeNavItem === "Notifications"}
+                  clickHandler={navClickHandler}
+                  target={Routes.HomePage()}
+                />
+                <NavListItem
+                  icon={<BsEnvelope />}
+                  iconActive={<BsFillEnvelopeFill />}
+                  text="Messages"
+                  isActive={activeNavItem === "Messages"}
+                  clickHandler={navClickHandler}
+                  target={Routes.HomePage()}
+                />
+                <NavListItem
+                  icon={<BsBookmark />}
+                  iconActive={<BsFillBookmarkFill />}
+                  text="Bookmarks"
+                  isActive={activeNavItem === "Bookmarks"}
+                  clickHandler={navClickHandler}
+                  target={Routes.HomePage()}
+                />
+                <NavListItem
+                  icon={<BsPerson />}
+                  iconActive={<BsPersonFill />}
+                  text="Profile"
+                  isActive={activeNavItem === "Profile"}
+                  clickHandler={navClickHandler}
+                  target={Routes.ProfilePage({
+                    username: currentUser.username,
+                  })}
+                />
+              </>
+            )}
           </List>
           {/* Tweet Button */}
           <Button
